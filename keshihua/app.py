@@ -3,8 +3,8 @@ from neo4j import GraphDatabase
 import json
 
 app = Flask(__name__)
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "lsp20010409"))
-
+driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "password"))  
+// password为你的neo4j数据库密码
 
 @app.route('/')
 def index():
