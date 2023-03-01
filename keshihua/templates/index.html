@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge Graph Visualization</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <style>
+    #visualization {
+      height: 600px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Knowledge Graph Visualization</a>
+    </div>
+  </nav>
+  <div class="container-fluid mt-3">
+    <form>
+      <div class="form-group">
+        <label for="query-input">Enter a node name to query:</label>
+        <input type="text" class="form-control" id="query-input" placeholder="e.g. Python">
+      </div>
+      <button type="submit" class="btn btn-primary">Query</button>
+    </form>
+  </div>
+  <div class="container-fluid mt-3">
+    <div id="visualization"></div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var nodes = new vis.DataSet();
+      var edges = new vis.DataSet();
+      var container = document.getElementById('visualization');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {
+   edges:{//关系线控制
+            width:2,//关系线宽度
+            arrows:{//箭头
+                to:{enabled:true,//箭头是否显示、开启
+                    scaleFactor:0.5,//箭头的大小
+                    type:'arrow',//箭头的类型
+                }
+            }}
+  };
+
+  var network = new vis.Network(container, data, options);
+
+  $('form').submit(function(event) {
+    event.preventDefault();
+    var input = $('#query-input').val();
+    $.ajax({
+      url: '/get_data',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({data: input}),
+      success: function(response) {
+        var data = JSON.parse(response);
+        console.log(data);
+        nodes.clear();
+        edges.clear();
+        nodes.add(data.nodes);
+        edges.add(data.links);
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
