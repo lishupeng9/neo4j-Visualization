@@ -54,18 +54,7 @@ def get_data():
 
 
 
-        # print(node_ids)
-        # nodes = [{"id": node_id, "label": node_name}
-        #          if node_id in node_ids
-        #          else node for node_id, node in
-        #          zip(node_ids, nodes)]
-    # updated_nodes = []
-    # for node_id, node in zip(node_ids, nodes):
-    #         if node_id in node_ids:
-    #             updated_nodes.append(node)
-    #         # else:
-    #         #     updated_nodes.append({"id": node_id, "label": node['label']})
-    # nodes = updated_nodes
+       
     nodes = [dict(t) for t in {tuple(d.items()) for d in nodes}]
 
     print(json.dumps({"nodes": nodes, "links": links}))
