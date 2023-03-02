@@ -1,4 +1,4 @@
-# query_neo4j_flask
+# 基于neo4j的查询可视化 
 ## 项目简介
  此项目是简单的neo4j查询可视化，使用Flask框架，通过vis.js可视化到前端
 ## 注意事项
